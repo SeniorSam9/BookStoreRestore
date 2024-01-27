@@ -44,6 +44,7 @@ app.MapControllerRoute(
     name: "default",
     // if nothing is defined in the url
     // go to this default url
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    // default area is the customer area
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
