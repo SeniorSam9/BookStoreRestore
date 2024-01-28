@@ -6,6 +6,7 @@ namespace BookStore.DataAccess.Repository
     public class UnitOfWork : IUnitOfWork
     {
         public ICategoryRepository Category { get; private set; }
+        public IProductRepository Product { get; private set; }
 
         private readonly ApplicationDbContext _dbContext;
 
@@ -13,6 +14,7 @@ namespace BookStore.DataAccess.Repository
         {
             _dbContext = dbContext;
             Category = new CategoryRepository(_dbContext);
+            Product = new ProductRepository(_dbContext);
         }
         public void Save()
         {
