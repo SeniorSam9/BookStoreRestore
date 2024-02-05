@@ -16,11 +16,10 @@ namespace BookStoreRestore.Areas.Admin.Controllers
         }
 
         public IActionResult Index()
-        {
-            // not yet implemented
-            List<Category> categoryList = _unitOfWork.Category.GetAll().ToList();
+        {   
+            List<Category> categories = _unitOfWork.Category.GetAll().ToList();
             // pass it to the view
-            return View(categoryList);
+            return View(categories);
         }
 
         public IActionResult Create()
