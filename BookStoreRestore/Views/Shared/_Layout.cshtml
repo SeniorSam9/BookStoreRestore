@@ -36,6 +36,10 @@
                                     <a class="nav-link" asp-area="Admin" asp-controller="Category"
                                        asp-action="Index">Categories</a>
                                 </li>
+                                <li class="nav-item dropdown-item">
+                                    <a class="nav-link" asp-area="Admin" asp-controller="Product"
+                                       asp-action="Index">Products</a>
+                                </li>
                             </ul>
                         </li>
                         <li class="nav-item">
@@ -52,9 +56,8 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
+    <footer class="border-top text-muted" style="position: absolute; bottom: 0; border-top: black solid 2px; width: 100%;">
+        <div class="container" style="display: flex; flex-direction: row; justify-content: center;">
             Made with <i class="bi bi-heart-fill"></i> by SeniorSam
         </div>
     </footer>
