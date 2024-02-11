@@ -70,6 +70,7 @@ namespace BookStoreRestore.Areas.Admin.Controllers
         }
 
         [HttpPost]
+
         public IActionResult Edit(Category category)
         {
 
@@ -89,7 +90,6 @@ namespace BookStoreRestore.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-
             Category? categoryFromDb = _unitOfWork.Category.Get(c => c.Id == id);
 
             if (categoryFromDb == null)
