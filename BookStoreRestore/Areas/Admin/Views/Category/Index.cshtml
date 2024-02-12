@@ -8,7 +8,7 @@ the keyword model is used to get the passed value and save it in Model
     <h2 style="color: green;">@TempData["success"]</h2>
 }
 <div class="card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+    <div class="card-header bg-primary ml-0 py-3">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">Category List</h2>
@@ -28,11 +28,11 @@ the keyword model is used to get the passed value and save it in Model
 
         <table class="table table-bordered table-striped">
             <thead>
-                <tr>
-                    <th>
+                <tr class="table-primary">
+                    <th class="text-body">
                         Category Name
                     </th>
-                    <th>
+                    <th class="text-body">
                         Display Order
                     </th>
                     <th></th>
@@ -42,8 +42,8 @@ the keyword model is used to get the passed value and save it in Model
                 @foreach (var category in Model.OrderBy(c => c.DisplayOrder))
                 {
                     <tr>
-                        <td>@category.Name</td>
-                        <td>
+                        <td class="text-body">@category.Name</td>
+                        <td class="text-body">
                             @category.DisplayOrder
                         </td>
                         <td>

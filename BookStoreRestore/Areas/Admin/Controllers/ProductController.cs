@@ -10,9 +10,12 @@ namespace BookStoreRestore.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
-        public ProductController(IUnitOfWork unitOfWork)
+        // this is to access wwwroot
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
+            _webHostEnvironment = webHostEnvironment;   
         }
 
         public IActionResult Index()
@@ -71,7 +74,34 @@ namespace BookStoreRestore.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(pvm.Product!);
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                if (file != null)
+                {
+                    // this gives random chars name
+                    string filename = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    // where to save
+                    string productPath = Path.Combine(wwwRootPath, @"images\products");
+
+                    // if img exist and we want to update
+                    if (!string.IsNullOrEmpty(pvm.Product.ImageUrl))
+                    {
+                        // delete the older version
+                        var oldImgPath = Path.Combine(wwwRootPath, pvm.Product.ImageUrl.TrimStart('\\'));
+                        if (System.IO.File.Exists(oldImgPath))
+                        {
+                            System.IO.File.Delete(oldImgPath);
+                        }
+                    }
+
+                    using (var fileStream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
+                    {
+                        file.CopyTo(fileStream);
+                    }
+                    // updating ImageUrl value
+                    pvm.Product.ImageUrl = @"\images\products\" + filename;
+                }
+                if (pvm.Product.Id == 0) _unitOfWork.Product.Add(pvm.Product!);
+                else _unitOfWork.Product.Update(pvm.Product!);
                 TempData["success"] = "Created Product Successfully!";
                 return RedirectToAction("Index");
             }

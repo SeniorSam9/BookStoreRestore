@@ -5,7 +5,7 @@ and will be send to the post action once submitted
 *@
 
 <div class="div-test card shadow border-0 mt-4">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+    <div class="card-header bg-primary ml-0 py-3" style="background-color: #54b8ae;">
         <div class="row">
             <div class="col-12 text-center">
                 <h2 class="text-white py-2">@(Model.Product.Id != 0 ? "Update" : "Create") Product</h2>
@@ -15,6 +15,12 @@ and will be send to the post action once submitted
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for="Product.Id" hidden/>
+            <div class="row">
+                <div class="col-10"></div>
+                <div class="col-2">
+                    <img src="@Model.Product.ImageUrl" width="100%" style="border-radius:5px; border: 1px solid #bbb9b9" />
+                </div>
+            </div>
             <div class="border p-3">
                 <div asp-validation-summary="All"></div>
                 <div class="form-floating py-2 col-12">
@@ -65,7 +71,7 @@ and will be send to the post action once submitted
                     <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
                 </div>
                 <div class="form-floating py-2 col-12">
-                    <input type="file" class="form-control border-0 shadow" />
+                    <input type="file" name="file" class="form-control border-0 shadow" />
                     <label asp-for="Product.ImageUrl" class="ms-2"></label>
                 </div>
                 <div class="row pt-2">
