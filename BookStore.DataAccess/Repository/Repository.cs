@@ -9,13 +9,17 @@ namespace BookStore.DataAccess.Repository
     {
         private readonly ApplicationDbContext _dbContext;
         // dbSet acts in place of T "if T is category then dbSet is category "
-        internal readonly DbSet<T> dbSet;
+        private readonly DbSet<T> dbSet;
         public Repository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
             dbSet = _dbContext.Set<T>();
         }
 
+        public DbSet<T> getDbSet()
+        {
+            return dbSet;
+        }
         public void Add(T entity)
         {
             _dbContext.Add(entity);
@@ -34,7 +38,7 @@ namespace BookStore.DataAccess.Repository
             _dbContext.SaveChanges();
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public virtual T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
         {
             // if dbset is category then query will be too
             IQueryable<T> query = dbSet;
@@ -42,7 +46,7 @@ namespace BookStore.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public virtual IEnumerable<T> GetAll(string? includeProperties = null)
         {
             IQueryable<T> query = dbSet;
             return query.ToList();

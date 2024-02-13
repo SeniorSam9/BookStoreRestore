@@ -26,56 +26,32 @@ the keyword model is used to get the passed value and save it in Model
             </div>
         </div>
 
-        <table class="table table-bordered table-striped">
+        <table id="myTable" class="table table-bordered table-striped" width="100%">
             <thead>
                 <tr class="table-primary">
-                    <th class="text-body">
+                    <th class="text-light">
                        Title
                     </th>
-                    <th class="text-body">
+                    <th class="text-light">
                        ISBN
                     </th>
-                    <th class="text-body">
+                    <th class="text-light">
                        Price
                     </th>
-                    <th class="text-body">
+                    <th class="text-light">
                         Author
+                    </th>
+                    <th class="text-light">
+                        Category
                     </th>
                     <th></th>
                 </tr>
             </thead>
-            <tbody>
-                @foreach (var product in Model.OrderBy(p => p.Id))
-                {
-                    <tr>
-                        <td class="text-body">@product.Title</td>
-                        <td class="text-body">
-                            @product.ISBN
-                        </td>
-                        <td class="text-body">@product.ListPrice</td>
-                        <td class="text-body">
-                            @product.Author
-                        </td>
-                        @*<td>
-                    @product.Name
-                    </td>*@
-                        <td>
-                            <div class="w-75 btn-group" role="group">
-                                <a asp-controller="Product" asp-action="Upsert" asp-route-id="@product.Id"
-                                   class="btn btn-primary mx-2">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
-                                @*asp-route-id (the word "id" should match the arg of Edit action in the controller)*@
-                                <a asp-controller="Product" asp-action="Delete" asp-route-id="@product.Id"
-                                   class="btn btn-danger mx-2">
-                                    <i class="bi bi-trash-fill"></i> Delete
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
         </table>
 
     </div>
 </div>
+
+@section Scripts{
+    <script src="~/js/products.js"></script>
+}

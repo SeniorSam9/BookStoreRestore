@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BookStore.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240211144428_imageUrlToProductTable")]
-    partial class imageUrlToProductTable
+    [Migration("20240213001043_ProductAndCategoryToDB")]
+    partial class ProductAndCategoryToDB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
