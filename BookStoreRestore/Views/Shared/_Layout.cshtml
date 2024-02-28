@@ -25,30 +25,35 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Content Management
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li class="nav-item dropdown-item">
-                                    <a class="nav-link text-success" asp-area="Admin" asp-controller="Category"
-                                       asp-action="Index">Categories</a>
-                                </li>
-                                <li class="nav-item dropdown-item">
-                                    <a class="nav-link text-success" asp-area="Admin" asp-controller="Product"
-                                       asp-action="Index">Products</a>
-                                </li>
-                            </ul>
-                        </li>
+                        @if (User.IsInRole(StaticDetails.Admin_Role))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <li class="nav-item dropdown-item">
+                                        <a class="nav-link text-success" asp-area="Admin" asp-controller="Category"
+                                           asp-action="Index">Categories</a>
+                                    </li>
+                                    <li class="nav-item dropdown-item">
+                                        <a class="nav-link text-success" asp-area="Admin" asp-controller="Product"
+                                           asp-action="Index">Products</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home"
                                 asp-action="Privacy">Privacy</a>
                         </li>
                     </ul>
+                    <partial name = "_LoginPartial" />
                 </div>
             </div>
         </nav>

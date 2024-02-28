@@ -1,4 +1,5 @@
-﻿using BookStore.Models;
+﻿using BookStore.DataAccess.Repository.IRepository;
+using BookStore.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -9,14 +10,16 @@ namespace BookStoreRestore.Areas.Customer.Controllers
     {
         // log information for debugging feedback
         private readonly ILogger<HomeController> _logger;
+        private readonly IUnitOfWork _unitOfWork;
         // MVC
         // Controller receives the request 
         // fetch the data from the Model and manipulate 
         // Controller renders the view along with the data
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
         {
             _logger = logger;
+            _unitOfWork = unitOfWork;
         }
         // actions methods
         public IActionResult Index()
@@ -29,8 +32,15 @@ namespace BookStoreRestore.Areas.Customer.Controllers
             // if return View("Privacy");
             // it will render privacy page
             // views are replaced with @RenderBody in _layout file
-            return View();
+            IEnumerable<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category");
+            return View(products);
 
+        }
+
+        public IActionResult Details(int productId)
+        {
+            Product? product = _unitOfWork.Product.Get(p => p.Id == productId, includeProperties: "Category");
+            return View(product);
         }
 
         public IActionResult Privacy()

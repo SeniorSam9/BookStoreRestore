@@ -14,7 +14,7 @@ namespace BookStore.DataAccess.Repository
     public class ProductRepository : Repository<Product>, IProductRepository
     {
         private readonly ApplicationDbContext _dbContext;
-        private static readonly char[] separator = new char[] {','};
+        private static readonly char[] separator = [','];
 
         public ProductRepository(ApplicationDbContext dbContext) : base(dbContext) 
         {
@@ -24,7 +24,25 @@ namespace BookStore.DataAccess.Repository
 
         public void Update(Product product)
         {
-            _dbContext.Products.Update(product);
+            Product? productFromDB = _dbContext.Products.FirstOrDefault(p => p.Id == product.Id);
+            if (productFromDB != null)
+            {
+                productFromDB.Title = product.Title;
+                productFromDB.ISBN = product.ISBN;
+                productFromDB.Price = product.Price;
+                productFromDB.Price50 = product.Price50;
+                productFromDB.ListPrice = product.ListPrice;
+                productFromDB.Price100 = product.Price100;
+                productFromDB.Description = product.Description;
+                productFromDB.CategoryId = product.CategoryId;
+                productFromDB.Author = product.Author;
+                //productFromDB.ProductImages = obj.ProductImages;
+                if (product.ImageUrl != null)
+                {
+                    productFromDB.ImageUrl = product.ImageUrl;
+                }
+            }
+            //_dbContext.Products.Update(product);
             _dbContext.SaveChanges();
         }
 

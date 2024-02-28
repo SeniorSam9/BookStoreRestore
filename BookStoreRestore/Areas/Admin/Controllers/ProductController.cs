@@ -1,12 +1,15 @@
 ﻿using BookStore.DataAccess.Repository.IRepository;
 using BookStore.Models;
 using BookStore.Models.ViewModels;
+using BookStore.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BookStoreRestore.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = StaticDetails.Admin_Role)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -100,9 +103,17 @@ namespace BookStoreRestore.Areas.Admin.Controllers
                     // updating ImageUrl value
                     pvm.Product.ImageUrl = @"\images\products\" + filename;
                 }
-                if (pvm.Product.Id == 0) _unitOfWork.Product.Add(pvm.Product!);
-                else _unitOfWork.Product.Update(pvm.Product!);
-                TempData["success"] = "Created Product Successfully!";
+                if (pvm.Product.Id == 0)
+                {
+                    _unitOfWork.Product.Add(pvm.Product!);
+                    TempData["success"] = "Created Product Successfully!";
+                }
+                else
+                {
+                    _unitOfWork.Product.Update(pvm.Product!);
+                    TempData["success"] = "Updated Product Successfully!";
+                }
+                
                 return RedirectToAction("Index");
             }
             else

@@ -1,9 +1,11 @@
 ﻿using BookStore.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 // this file is the gateway between the this project and the database
 namespace BookStore.DataAccess.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     {
         // whatever configuration we do in the app db context
         // we will pass them to the DbContext
@@ -15,10 +17,12 @@ namespace BookStore.DataAccess.Data
         // this line alone is enough to create a table with name (Categories) in the db
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ApplicationUser> ApplicationUsers { get; set; }
 
         // model builder allows us to deal with the data exists in the DB
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
             // here is a new update
             // hence we need to add migration
             // database seed (init a category table with the seed rows)
