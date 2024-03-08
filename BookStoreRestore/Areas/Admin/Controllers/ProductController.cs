@@ -86,7 +86,7 @@ namespace BookStoreRestore.Areas.Admin.Controllers
                     string productPath = Path.Combine(wwwRootPath, @"images\products");
 
                     // if img exist and we want to update
-                    if (!string.IsNullOrEmpty(pvm.Product.ImageUrl))
+                    if (!string.IsNullOrEmpty(pvm.Product!.ImageUrl))
                     {
                         // delete the older version
                         var oldImgPath = Path.Combine(wwwRootPath, pvm.Product.ImageUrl.TrimStart('\\'));

@@ -18,6 +18,7 @@ namespace BookStore.DataAccess.Data
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+        public DbSet<Company> Companies { get; set; }
 
         // model builder allows us to deal with the data exists in the DB
         protected override void OnModelCreating(ModelBuilder modelBuilder)

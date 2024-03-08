@@ -7,6 +7,7 @@ namespace BookStore.DataAccess.Repository
     {
         public ICategoryRepository Category { get; private set; }
         public IProductRepository Product { get; private set; }
+        public ICompanyRepository Company { get; private set; }
 
         private readonly ApplicationDbContext _dbContext;
 
@@ -15,6 +16,7 @@ namespace BookStore.DataAccess.Repository
             _dbContext = dbContext;
             Category = new CategoryRepository(_dbContext);
             Product = new ProductRepository(_dbContext);
+            Company = new CompanyRepository(_dbContext);
         }
         public void Save()
         {
