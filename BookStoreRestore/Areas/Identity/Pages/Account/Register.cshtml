@@ -58,7 +58,14 @@
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select"></select>
+                <select asp-for="Input.Role" asp-items="@Model.Input.RoleList" class="form-select" id="input-role">
+                    <option disabled selected>-Select Role-</option>
+                </select>
+            </div>
+            <div class="form-floating mb-3">
+                <select asp-for="Input.CompanyId" asp-items="@Model.Input.CompanyList" class="form-select" style="display:none;">
+                    <option disabled selected>-Select Company-</option>
+                </select>
             </div>
             <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
         </form>
@@ -97,4 +104,18 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        $(document).ready(function () {
+            $('#Input_Role').change(function () {
+                var selection = $('#Input_Role Option:Selected').text();
+                if (selection == 'Company') {
+                    $('#Input_CompanyId').show();
+                }
+                else {
+                    $('#Input_CompanyId').hide();
+                }
+            })
+        })
+    </script>
+
 }
