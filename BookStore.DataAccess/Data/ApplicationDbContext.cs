@@ -15,11 +15,13 @@ namespace BookStore.DataAccess.Data
 
         }
         // this line alone is enough to create a table with name (Categories) in the db
+        // adding dbset -> adding migration
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
-
+        public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+             
         // model builder allows us to deal with the data exists in the DB
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

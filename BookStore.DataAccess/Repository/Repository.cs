@@ -38,7 +38,7 @@ namespace BookStore.DataAccess.Repository
             _dbContext.SaveChanges();
         }
 
-        public virtual T Get(Expression<Func<T, bool>> filter, string? includeProperties = null)
+        public virtual T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
             // if dbset is category then query will be too
             IQueryable<T> query = dbSet;

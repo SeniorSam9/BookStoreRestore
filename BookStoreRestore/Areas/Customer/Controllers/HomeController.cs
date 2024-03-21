@@ -1,7 +1,10 @@
 ﻿using BookStore.DataAccess.Repository.IRepository;
 using BookStore.Models;
+using BookStore.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace BookStoreRestore.Areas.Customer.Controllers
 {
@@ -39,10 +42,46 @@ namespace BookStoreRestore.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-            Product? product = _unitOfWork.Product.Get(p => p.Id == productId, includeProperties: "Category");
-            return View(product);
+            ShoppingCart shoppingCart = new() 
+            {
+                Product = _unitOfWork.Product.Get(p => p.Id == productId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = productId,
+            };
+
+            return View(shoppingCart);
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult Details(ShoppingCart shoppingCart) 
+        {
+            // for shopping each user has his cart so we need to populate it
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            // getting userId now 
+            // ClaimTypes.NameIdentifier).Value this line gets user id that is stored in this string "(ClaimTypes.NameIdentifier"
+            // all that is done by .NET
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => 
+            u.ApplicationUserId == userId
+            && u.ProductId == shoppingCart.ProductId
+            );
+
+            if (cartFromDb != null)
+            {
+                cartFromDb.Count += shoppingCart.Count;
+                _unitOfWork.ShoppingCart.Update(cartFromDb);
+            }
+            else
+            {
+                _unitOfWork.ShoppingCart.Add(shoppingCart);
+            }
+            TempData["success"] = "Cart updated successfully";
+            return RedirectToAction(nameof(Index));
+
+        }
         public IActionResult Privacy()
         {
             return View();

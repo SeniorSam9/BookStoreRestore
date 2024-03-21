@@ -46,11 +46,20 @@ namespace BookStore.DataAccess.Repository
             _dbContext.SaveChanges();
         }
 
-        public override Product Get(Expression<Func<Product, bool>> filter, string? includeProperties = null)
+        public override Product Get(Expression<Func<Product, bool>> filter, string? includeProperties = null, bool tracked = false)
         {
-            IQueryable<Product> query = getDbSet();
-            query = query.Where(filter);
+            IQueryable<Product> query;
+            if (tracked) 
+            {
+                query = getDbSet();
+            }
+            else
+            {
+                query = getDbSet().AsNoTracking();
+            }
 
+
+            query = query.Where(filter);
             if (!string.IsNullOrEmpty(includeProperties))
             {
                 foreach (var incProp in includeProperties.Split(
@@ -60,7 +69,6 @@ namespace BookStore.DataAccess.Repository
                     query = query.Include(incProp);
                 }
             }
-
             return query.FirstOrDefault();
         }
         public override IEnumerable<Product> GetAll(string? includeProperties = null)
