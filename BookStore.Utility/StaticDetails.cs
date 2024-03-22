@@ -12,6 +12,5 @@ namespace BookStore.Utility
         public const string Company_Role = "Company";
         public const string Admin_Role = "Admin";
         public const string Employee_Role = "Employee";
-
     }
 }

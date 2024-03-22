@@ -22,8 +22,8 @@ namespace BookStore.DataAccess.Repository
             Company = new CompanyRepository(_dbContext);
             ShoppingCart = new ShoppingCartRepository(_dbContext);
             ApplicationUser = new ApplicationUserRepository(_dbContext);
-
         }
+
         public void Save()
         {
             _dbContext.SaveChanges();

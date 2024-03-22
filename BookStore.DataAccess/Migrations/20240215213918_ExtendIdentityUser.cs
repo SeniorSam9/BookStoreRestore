@@ -14,7 +14,8 @@ namespace BookStore.DataAccess.Migrations
                 name: "City",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "Discriminator",
@@ -22,59 +23,52 @@ namespace BookStore.DataAccess.Migrations
                 type: "nvarchar(21)",
                 maxLength: 21,
                 nullable: false,
-                defaultValue: "");
+                defaultValue: ""
+            );
 
             migrationBuilder.AddColumn<int>(
                 name: "Name",
                 table: "AspNetUsers",
                 type: "int",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "PostalCode",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "State",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.AddColumn<string>(
                 name: "StreetAdress",
                 table: "AspNetUsers",
                 type: "nvarchar(max)",
-                nullable: true);
+                nullable: true
+            );
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropColumn(
-                name: "City",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "City", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "Discriminator",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "Discriminator", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "Name",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "Name", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "PostalCode",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "PostalCode", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "State",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "State", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "StreetAdress",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "StreetAdress", table: "AspNetUsers");
         }
     }
 }

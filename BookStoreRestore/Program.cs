@@ -5,8 +5,8 @@
 using BookStore.DataAccess.Data;
 using BookStore.DataAccess.Repository;
 using BookStore.DataAccess.Repository.IRepository;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +20,10 @@ builder.Services.AddDbContext<ApplicationDbContext>(dbContextOptions =>
 });
 
 // identity configuration
-builder.Services.AddIdentity<IdentityUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder
+    .Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 builder.Services.ConfigureApplicationCookie(options =>
 {
     options.LoginPath = $"/Identity/Account/Login";
@@ -30,7 +33,6 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 // Dependency injections
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
 
 var app = builder.Build();
 
@@ -57,6 +59,7 @@ app.MapControllerRoute(
     // if nothing is defined in the url
     // go to this default url
     // default area is the customer area
-    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
+    pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}"
+);
 
 app.Run();

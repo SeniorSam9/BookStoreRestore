@@ -18,7 +18,8 @@ namespace BookStoreRestore.Areas.Identity.Pages.Account.Manage
 
         public Disable2faModel(
             UserManager<IdentityUser> userManager,
-            ILogger<Disable2faModel> logger)
+            ILogger<Disable2faModel> logger
+        )
         {
             _userManager = userManager;
             _logger = logger;
@@ -41,7 +42,9 @@ namespace BookStoreRestore.Areas.Identity.Pages.Account.Manage
 
             if (!await _userManager.GetTwoFactorEnabledAsync(user))
             {
-                throw new InvalidOperationException($"Cannot disable 2FA for user as it's not currently enabled.");
+                throw new InvalidOperationException(
+                    $"Cannot disable 2FA for user as it's not currently enabled."
+                );
             }
 
             return Page();
@@ -61,8 +64,12 @@ namespace BookStoreRestore.Areas.Identity.Pages.Account.Manage
                 throw new InvalidOperationException($"Unexpected error occurred disabling 2FA.");
             }
 
-            _logger.LogInformation("User with ID '{UserId}' has disabled 2fa.", _userManager.GetUserId(User));
-            StatusMessage = "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
+            _logger.LogInformation(
+                "User with ID '{UserId}' has disabled 2fa.",
+                _userManager.GetUserId(User)
+            );
+            StatusMessage =
+                "2fa has been disabled. You can reenable 2fa when you setup an authenticator app";
             return RedirectToPage("./TwoFactorAuthentication");
         }
     }

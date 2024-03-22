@@ -13,18 +13,22 @@ namespace BookStoreRestore.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
         // this is to access wwwroot
         private readonly IWebHostEnvironment _webHostEnvironment;
+
         public ProductController(IUnitOfWork unitOfWork, IWebHostEnvironment webHostEnvironment)
         {
             _unitOfWork = unitOfWork;
-            _webHostEnvironment = webHostEnvironment;   
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public IActionResult Index()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
-            
+            List<Product> products = _unitOfWork
+                .Product.GetAll(includeProperties: "Category")
+                .ToList();
+
             return View(products);
         }
 
@@ -37,11 +41,9 @@ namespace BookStoreRestore.Areas.Admin.Controllers
             // so here comes the feature of selectlistitem
             // and we are projecting (means: all categories object they are parsed into name and value).
             /*CONCEPT OF PROJECTION*/
-            IEnumerable<SelectListItem> categories = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
-            {
-                Text = c.Name,
-                Value = c.Id.ToString(),
-            });
+            IEnumerable<SelectListItem> categories = _unitOfWork
+                .Category.GetAll()
+                .Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString(), });
             // now that we retrieved the list, how to pass it?
             // 1. ViewBag: dynamic, temprory per request, good for messages not exisiting in the Model
             // ViewBag.key = value;
@@ -54,13 +56,12 @@ namespace BookStoreRestore.Areas.Admin.Controllers
             // 3. TempData: same, needs to be casted before used, error or success message, can be used between requests
             // but disappears after some time, think of it as short life session.
             // 4. ViewModels: Convenient one, static (Model that is specific to a View).
-            ProductVM pvm = new() 
-            {
-                CategoryList = categories,
-                Product = new Product(),
-            };
+            ProductVM pvm = new() { CategoryList = categories, Product = new Product(), };
             // this means Create
-            if (id == 0 || id == null) { return View(pvm); }
+            if (id == 0 || id == null)
+            {
+                return View(pvm);
+            }
             // we have an id so Update
             else
             {
@@ -89,14 +90,22 @@ namespace BookStoreRestore.Areas.Admin.Controllers
                     if (!string.IsNullOrEmpty(pvm.Product!.ImageUrl))
                     {
                         // delete the older version
-                        var oldImgPath = Path.Combine(wwwRootPath, pvm.Product.ImageUrl.TrimStart('\\'));
+                        var oldImgPath = Path.Combine(
+                            wwwRootPath,
+                            pvm.Product.ImageUrl.TrimStart('\\')
+                        );
                         if (System.IO.File.Exists(oldImgPath))
                         {
                             System.IO.File.Delete(oldImgPath);
                         }
                     }
 
-                    using (var fileStream = new FileStream(Path.Combine(productPath, filename), FileMode.Create))
+                    using (
+                        var fileStream = new FileStream(
+                            Path.Combine(productPath, filename),
+                            FileMode.Create
+                        )
+                    )
                     {
                         file.CopyTo(fileStream);
                     }
@@ -113,59 +122,64 @@ namespace BookStoreRestore.Areas.Admin.Controllers
                     _unitOfWork.Product.Update(pvm.Product!);
                     TempData["success"] = "Updated Product Successfully!";
                 }
-                
+
                 return RedirectToAction("Index");
             }
             else
             {
-                pvm.CategoryList = _unitOfWork.Category.GetAll().Select(c => new SelectListItem
-                {
-                    Text = c.Name,
-                    Value = c.Id.ToString(),
-                });
+                pvm.CategoryList = _unitOfWork
+                    .Category.GetAll()
+                    .Select(c => new SelectListItem { Text = c.Name, Value = c.Id.ToString(), });
                 return View(pvm);
             }
         }
 
-/*        [HttpGet]
-        public IActionResult Delete(int? id)
-        {
-            if (id == null || id == 0) return NotFound(); 
-
-            Product? productToDelete = _unitOfWork.Product.Get(p => p.Id == id);
-
-            if (productToDelete == null) return NotFound(); 
-
-            _unitOfWork.Product.Delete(productToDelete);
-            return RedirectToAction("Index");
-        }
-*/
+        /*        [HttpGet]
+                public IActionResult Delete(int? id)
+                {
+                    if (id == null || id == 0) return NotFound();
+        
+                    Product? productToDelete = _unitOfWork.Product.Get(p => p.Id == id);
+        
+                    if (productToDelete == null) return NotFound();
+        
+                    _unitOfWork.Product.Delete(productToDelete);
+                    return RedirectToAction("Index");
+                }
+        */
         #region API CALLS
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<Product> products = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            List<Product> products = _unitOfWork
+                .Product.GetAll(includeProperties: "Category")
+                .ToList();
             return Json(new { success = true, data = products });
         }
 
         [HttpDelete]
-        public IActionResult Delete(int? id) 
+        public IActionResult Delete(int? id)
         {
             Product? productToDelete = _unitOfWork.Product.Get(p => p.Id == id);
 
-            if (productToDelete == null) 
+            if (productToDelete == null)
             {
-                return Json(new
-                {
-                    success = false,
-                    data = @"Failed to delete,
+                return Json(
+                    new
+                    {
+                        success = false,
+                        data = @"Failed to delete,
                             no such product exist! 
                             Make sure to delete a valid existing id."
-                });
+                    }
+                );
             }
 
             // delete its image
-            var oldImgPath = Path.Combine(_webHostEnvironment.WebRootPath, productToDelete.ImageUrl.TrimStart('\\'));
+            var oldImgPath = Path.Combine(
+                _webHostEnvironment.WebRootPath,
+                productToDelete.ImageUrl.TrimStart('\\')
+            );
             if (System.IO.File.Exists(oldImgPath))
             {
                 System.IO.File.Delete(oldImgPath);

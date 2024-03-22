@@ -12,12 +12,14 @@ namespace BookStore.Models
         // so [Key] is not required here
         [Key]
         public int Id { get; set; }
+
         [Required]
         [DisplayName("Category Name")]
-        // server side validation 
+        // server side validation
         // maximum string length of 30 chars
         [MaxLength(30)]
         public string? Name { get; set; }
+
         [DisplayName("Display Order")]
         // display order number is from 1 to 100 only
         [Range(1, 100, ErrorMessage = "Hey DO must be between 1 and 100")]
@@ -32,7 +34,7 @@ namespace BookStore.Models
         private int speed;
         private int Speed
         {
-            get 
+            get
             {
                 return speed;
             }

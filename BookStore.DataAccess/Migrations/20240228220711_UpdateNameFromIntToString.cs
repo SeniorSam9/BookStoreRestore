@@ -17,7 +17,8 @@ namespace BookStore.DataAccess.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(128)",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -26,7 +27,8 @@ namespace BookStore.DataAccess.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(128)",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "Name",
@@ -35,7 +37,8 @@ namespace BookStore.DataAccess.Migrations
                 nullable: true,
                 oldClrType: typeof(int),
                 oldType: "int",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
@@ -44,7 +47,8 @@ namespace BookStore.DataAccess.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(128)",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -53,7 +57,8 @@ namespace BookStore.DataAccess.Migrations
                 nullable: false,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(128)",
-                oldMaxLength: 128);
+                oldMaxLength: 128
+            );
         }
 
         /// <inheritdoc />
@@ -66,7 +71,8 @@ namespace BookStore.DataAccess.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
+                oldType: "nvarchar(450)"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -75,7 +81,8 @@ namespace BookStore.DataAccess.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
+                oldType: "nvarchar(450)"
+            );
 
             migrationBuilder.AlterColumn<int>(
                 name: "Name",
@@ -84,7 +91,8 @@ namespace BookStore.DataAccess.Migrations
                 nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)",
-                oldNullable: true);
+                oldNullable: true
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "ProviderKey",
@@ -93,7 +101,8 @@ namespace BookStore.DataAccess.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
+                oldType: "nvarchar(450)"
+            );
 
             migrationBuilder.AlterColumn<string>(
                 name: "LoginProvider",
@@ -102,7 +111,8 @@ namespace BookStore.DataAccess.Migrations
                 maxLength: 128,
                 nullable: false,
                 oldClrType: typeof(string),
-                oldType: "nvarchar(450)");
+                oldType: "nvarchar(450)"
+            );
         }
     }
 }

@@ -1,10 +1,9 @@
 ﻿using BookStore.DataAccess.Data;
-using BookStore.Models;
-using Microsoft.AspNetCore.Mvc;
 using BookStore.DataAccess.Repository.IRepository;
-using Microsoft.AspNetCore.Authorization;
+using BookStore.Models;
 using BookStore.Utility;
-
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookStoreRestore.Areas.Admin.Controllers
 {
@@ -13,13 +12,14 @@ namespace BookStoreRestore.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
+
         public CategoryController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
         public IActionResult Index()
-        {   
+        {
             List<Category> categories = _unitOfWork.Category.GetAll().ToList();
             // pass it to the view
             return View(categories);
@@ -73,10 +73,8 @@ namespace BookStoreRestore.Areas.Admin.Controllers
         }
 
         [HttpPost]
-
         public IActionResult Edit(Category category)
         {
-
             if (ModelState.IsValid)
             {
                 // we dont need to look for the id manually

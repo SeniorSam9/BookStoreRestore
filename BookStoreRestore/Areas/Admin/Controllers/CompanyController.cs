@@ -23,15 +23,17 @@ namespace BookStoreRestore.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Company> Companies = _unitOfWork.Company.GetAll().ToList();
-            
+
             return View(Companies);
         }
 
         [HttpGet]
         public IActionResult Upsert(int? id)
         {
-
-            if (id == 0 || id == null) { return View(new Company()); }
+            if (id == 0 || id == null)
+            {
+                return View(new Company());
+            }
             // we have an id so Update
             else
             {
@@ -44,11 +46,8 @@ namespace BookStoreRestore.Areas.Admin.Controllers
         [HttpPost]
         public IActionResult Upsert(Company company)
         {
-     
-
             if (ModelState.IsValid)
             {
-               
                 if (company.Id == 0)
                 {
                     _unitOfWork.Company.Add(company!);
@@ -59,7 +58,7 @@ namespace BookStoreRestore.Areas.Admin.Controllers
                     _unitOfWork.Company.Update(company!);
                     TempData["success"] = "Updated Company Successfully!";
                 }
-                
+
                 return RedirectToAction("Index");
             }
             else
@@ -83,13 +82,15 @@ namespace BookStoreRestore.Areas.Admin.Controllers
 
             if (companyToBeDeleted == null)
             {
-                return Json(new
-                {
-                    success = false,
-                    data = @"Failed to delete,
+                return Json(
+                    new
+                    {
+                        success = false,
+                        data = @"Failed to delete,
                             no such product exist! 
                             Make sure to delete a valid existing id."
-                });
+                    }
+                );
             }
 
             _unitOfWork.Company.Delete(companyToBeDeleted);

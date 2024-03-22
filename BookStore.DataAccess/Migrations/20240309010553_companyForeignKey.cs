@@ -14,19 +14,22 @@ namespace BookStore.DataAccess.Migrations
                 name: "CompanyId",
                 table: "AspNetUsers",
                 type: "int",
-                nullable: true);
+                nullable: true
+            );
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUsers_CompanyId",
                 table: "AspNetUsers",
-                column: "CompanyId");
+                column: "CompanyId"
+            );
 
             migrationBuilder.AddForeignKey(
                 name: "FK_AspNetUsers_Companies_CompanyId",
                 table: "AspNetUsers",
                 column: "CompanyId",
                 principalTable: "Companies",
-                principalColumn: "Id");
+                principalColumn: "Id"
+            );
         }
 
         /// <inheritdoc />
@@ -34,15 +37,12 @@ namespace BookStore.DataAccess.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_AspNetUsers_Companies_CompanyId",
-                table: "AspNetUsers");
+                table: "AspNetUsers"
+            );
 
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_CompanyId",
-                table: "AspNetUsers");
+            migrationBuilder.DropIndex(name: "IX_AspNetUsers_CompanyId", table: "AspNetUsers");
 
-            migrationBuilder.DropColumn(
-                name: "CompanyId",
-                table: "AspNetUsers");
+            migrationBuilder.DropColumn(name: "CompanyId", table: "AspNetUsers");
         }
     }
 }

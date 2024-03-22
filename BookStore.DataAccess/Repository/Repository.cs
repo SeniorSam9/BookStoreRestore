@@ -5,11 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookStore.DataAccess.Repository
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T>
+        where T : class
     {
         private readonly ApplicationDbContext _dbContext;
+
         // dbSet acts in place of T "if T is category then dbSet is category "
         private readonly DbSet<T> dbSet;
+
         public Repository(ApplicationDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -20,6 +23,7 @@ namespace BookStore.DataAccess.Repository
         {
             return dbSet;
         }
+
         public void Add(T entity)
         {
             _dbContext.Add(entity);
@@ -38,7 +42,11 @@ namespace BookStore.DataAccess.Repository
             _dbContext.SaveChanges();
         }
 
-        public virtual T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        public virtual T Get(
+            Expression<Func<T, bool>> filter,
+            string? includeProperties = null,
+            bool tracked = false
+        )
         {
             // if dbset is category then query will be too
             IQueryable<T> query = dbSet;
@@ -50,8 +58,6 @@ namespace BookStore.DataAccess.Repository
         {
             IQueryable<T> query = dbSet;
             return query.ToList();
-
-
         }
     }
 }
