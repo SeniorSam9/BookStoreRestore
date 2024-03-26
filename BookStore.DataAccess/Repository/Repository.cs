@@ -54,7 +54,10 @@ namespace BookStore.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public virtual IEnumerable<T> GetAll(string? includeProperties = null)
+        public virtual IEnumerable<T> GetAll(
+            Expression<Func<T, bool>>? filter = null,
+            string? includeProperties = null
+        )
         {
             IQueryable<T> query = dbSet;
             return query.ToList();

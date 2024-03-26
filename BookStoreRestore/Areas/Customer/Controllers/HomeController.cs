@@ -66,16 +66,10 @@ namespace BookStoreRestore.Areas.Customer.Controllers
         [Authorize]
         public IActionResult Details(ShoppingCart shoppingCart)
         {
-            // for shopping each user has his cart so we need to populate it
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            // getting userId now
-            // (ClaimTypes.NameIdentifier).Value this line gets user id that is stored in this string "(ClaimTypes.NameIdentifier"
-            // all that is done by .NET
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            shoppingCart.ApplicationUserId = userId;
+            shoppingCart.ApplicationUserId = GetUserID();
 
             ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u =>
-                u.ApplicationUserId == userId && u.ProductId == shoppingCart.ProductId
+                u.ApplicationUserId == GetUserID() && u.ProductId == shoppingCart.ProductId
             );
 
             if (cartFromDb != null)
@@ -105,6 +99,16 @@ namespace BookStoreRestore.Areas.Customer.Controllers
                     RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
                 }
             );
+        }
+
+        private string GetUserID()
+        {
+            // for shopping each user has his cart so we need to populate it
+            // getting userId now
+            // (ClaimTypes.NameIdentifier).Value this line gets user id that is stored in this string "(ClaimTypes.NameIdentifier"
+            // all that is done by .NET
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
+            return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
         }
     }
 }

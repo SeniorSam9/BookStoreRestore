@@ -79,7 +79,10 @@ namespace BookStore.DataAccess.Repository
             return query.FirstOrDefault();
         }
 
-        public override IEnumerable<Product> GetAll(string? includeProperties = null)
+        public override IEnumerable<Product> GetAll(
+            Expression<Func<Product, bool>>? filter = null,
+            string? includeProperties = null
+        )
         {
             IQueryable<Product> query = getDbSet();
 

@@ -12,7 +12,10 @@ namespace BookStore.DataAccess.Repository.IRepository
     {
         // repository hold related models that communicate with the DB and may have similar functionality
         // T - Category
-        IEnumerable<T> GetAll(string? includeProperties = null);
+        IEnumerable<T> GetAll(
+            Expression<Func<T, bool>>? filter = null,
+            string? includeProperties = null
+        );
 
         // takes object if type T as parameter of the function and should return boolean
         // the expression has to be boolean
