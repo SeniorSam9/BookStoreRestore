@@ -20,6 +20,8 @@ namespace BookStore.DataAccess.Data
         public DbSet<ApplicationUser> ApplicationUsers { get; set; }
         public DbSet<Company> Companies { get; set; }
         public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+        public DbSet<OrderHeader> OrderHeaders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
 
         // model builder allows us to deal with the data exists in the DB
         protected override void OnModelCreating(ModelBuilder modelBuilder)
