@@ -32,13 +32,54 @@ namespace BookStoreRestore.Areas.Customer.Controllers
                     ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
                         u => u.ApplicationUserId == GetUserID(),
                         includeProperties: "Product"
-                    )
+                    ),
+                    OrderHeader = new()
                 };
+            foreach (var cart in ShoppingCartVM.ShoppingCartList)
+            {
+                cart.Price = GetPriceBasedOnQuantity(cart);
+                ShoppingCartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
+            }
+            return View(ShoppingCartVM);
+        }
+
+        public IActionResult Summary()
+        {
+            ShoppingCartVM = new()
+            {
+                ShoppingCartList = _unitOfWork.ShoppingCart.GetAll(
+                    u => u.ApplicationUserId == GetUserID(),
+                    includeProperties: "Product"
+                ),
+                OrderHeader = new()
+            };
+
+            ShoppingCartVM.OrderHeader.ApplicationUser = _unitOfWork.ApplicationUser.Get(u =>
+                u.Id == GetUserID()
+            );
+
+            // populating data
+
+            ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
+            ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM
+                .OrderHeader
+                .ApplicationUser
+                .PhoneNumber;
+            ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM
+                .OrderHeader
+                .ApplicationUser
+                .StreetAddress;
+            ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
+            ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
+            ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM
+                .OrderHeader
+                .ApplicationUser
+                .PostalCode;
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
                 cart.Price = GetPriceBasedOnQuantity(cart);
-                ShoppingCartVM.OrderTotal += cart.Price * cart.Count;
+                ShoppingCartVM.OrderHeader.OrderTotal += cart.Price * cart.Count;
             }
             return View(ShoppingCartVM);
         }
@@ -76,11 +117,6 @@ namespace BookStoreRestore.Areas.Customer.Controllers
             _unitOfWork.ShoppingCart.Delete(cartFromDb);
 
             return RedirectToAction(nameof(Index));
-        }
-
-        public IActionResult Summary()
-        {
-            return View();
         }
 
         /*
