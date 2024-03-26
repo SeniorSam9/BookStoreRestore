@@ -1,7 +1,7 @@
 using BookStore.DataAccess.Data;
+using BookStore.DataAccess.Repository;
 using BookStore.DataAccess.Repository.IRepository;
 using BookStore.Models;
-using BulkyBook.DataAccess.Repository;
 
 namespace BookStore.DataAccess.Repository
 {

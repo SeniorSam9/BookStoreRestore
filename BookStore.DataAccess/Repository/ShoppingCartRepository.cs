@@ -9,7 +9,7 @@ using BookStore.DataAccess.Repository;
 using BookStore.DataAccess.Repository.IRepository;
 using BookStore.Models;
 
-namespace BulkyBook.DataAccess.Repository
+namespace BookStore.DataAccess.Repository
 {
     public class ShoppingCartRepository : Repository<ShoppingCart>, IShoppingCartRepository
     {
