@@ -23,6 +23,7 @@ namespace BookStore.DataAccess.Repository
         public void Update(OrderHeader obj)
         {
             _db.OrderHeaders.Update(obj);
+            _db.SaveChanges();
         }
 
         public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
@@ -36,6 +37,7 @@ namespace BookStore.DataAccess.Repository
                     orderFromDb.PaymentStatus = paymentStatus;
                 }
             }
+            _db.SaveChanges();
         }
 
         public void UpdateStripePaymentID(int id, string sessionId, string paymentIntentId)
@@ -50,6 +52,7 @@ namespace BookStore.DataAccess.Repository
                 orderFromDb.PaymentIntentId = paymentIntentId;
                 orderFromDb.PaymentDate = DateTime.Now;
             }
+            _db.SaveChanges();
         }
     }
 }
