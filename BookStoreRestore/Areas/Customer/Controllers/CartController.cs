@@ -15,7 +15,7 @@ namespace BookStoreRestore.Areas.Customer.Controllers
     [Authorize]
     public class CartController : Controller
     {
-        private const int RegularCustomer = 0;
+        private const int REGULAR_CUSTOMER = 0;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IEmailSender _emailSender;
 
@@ -65,28 +65,25 @@ namespace BookStoreRestore.Areas.Customer.Controllers
             // populating data
 
             ShoppingCartVM.OrderHeader.Name = ShoppingCartVM.OrderHeader.ApplicationUser.Name;
-#pragma warning disable CS8601 // Possible null reference assignment.
+
             ShoppingCartVM.OrderHeader.PhoneNumber = ShoppingCartVM
                 .OrderHeader
                 .ApplicationUser
                 .PhoneNumber;
-#pragma warning restore CS8601 // Possible null reference assignment.
-#pragma warning disable CS8601 // Possible null reference assignment.
+
             ShoppingCartVM.OrderHeader.StreetAddress = ShoppingCartVM
                 .OrderHeader
                 .ApplicationUser
                 .StreetAddress;
-#pragma warning restore CS8601 // Possible null reference assignment.
+
             ShoppingCartVM.OrderHeader.City = ShoppingCartVM.OrderHeader.ApplicationUser.City;
-#pragma warning disable CS8601 // Possible null reference assignment.
+
             ShoppingCartVM.OrderHeader.State = ShoppingCartVM.OrderHeader.ApplicationUser.State;
-#pragma warning restore CS8601 // Possible null reference assignment.
-#pragma warning disable CS8601 // Possible null reference assignment.
+
             ShoppingCartVM.OrderHeader.PostalCode = ShoppingCartVM
                 .OrderHeader
                 .ApplicationUser
                 .PostalCode;
-#pragma warning restore CS8601 // Possible null reference assignment.
 
             foreach (var cart in ShoppingCartVM.ShoppingCartList)
             {
@@ -123,7 +120,7 @@ namespace BookStoreRestore.Areas.Customer.Controllers
                 u.Id == GetUserID()
             );
 
-            if (applicationUser.CompanyId.GetValueOrDefault() == RegularCustomer)
+            if (applicationUser.CompanyId.GetValueOrDefault() == REGULAR_CUSTOMER)
             {
                 //it is a regular customer
                 ShoppingCartVM.OrderHeader.PaymentStatus = StaticDetails.PaymentStatusPending;
@@ -154,7 +151,7 @@ namespace BookStoreRestore.Areas.Customer.Controllers
                 _unitOfWork.OrderDetail.Add(orderDetail);
             }
 
-            if (applicationUser.CompanyId.GetValueOrDefault() == RegularCustomer)
+            if (applicationUser.CompanyId.GetValueOrDefault() == REGULAR_CUSTOMER)
             {
                 var domain = Request.Scheme + "://" + Request.Host.Value + "/";
                 var options = new SessionCreateOptions
@@ -290,12 +287,9 @@ namespace BookStoreRestore.Areas.Customer.Controllers
         */
         private string GetUserID()
         {
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
             ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
-#pragma warning restore CS8600 // Converting null literal or possible null value to non-nullable type.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
+
             return claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         }
 
         private static double GetPriceBasedOnQuantity(ShoppingCart shoppingCart)
