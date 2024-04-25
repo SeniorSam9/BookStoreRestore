@@ -12,20 +12,11 @@ namespace BookStore.DataAccess.Repository.IRepository
     {
         // repository hold related models that communicate with the DB and may have similar functionality
         // T - Category
-        IEnumerable<T> GetAll(
-            Expression<Func<T, bool>>? filter = null,
-            string? includeProperties = null
-        );
-
-        // takes object if type T as parameter of the function and should return boolean
-        // the expression has to be boolean
-        T Get(
-            Expression<Func<T, bool>> filter,
-            string? includeProperties = null,
-            bool tracked = false
-        );
+        //T - Category
+        IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter = null, string? includeProperties = null);
+        T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false);
         void Add(T entity);
         void Delete(T entity);
-        void DeleteRange(IEnumerable<T> entities);
+        void DeleteRange(IEnumerable<T> entity);
     }
 }

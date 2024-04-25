@@ -48,42 +48,45 @@ namespace BookStoreRestore.Areas.Customer.Controllers
 
         public IActionResult Details(int productId)
         {
-            ShoppingCart shoppingCart =
-                new()
-                {
-                    Product = _unitOfWork.Product.Get(
-                        p => p.Id == productId,
-                        includeProperties: "Category"
-                    ),
-                    Count = 1,
-                    ProductId = productId,
-                };
-
-            return View(shoppingCart);
+            ShoppingCart cart = new()
+            {
+                Product = _unitOfWork.Product.Get(u => u.Id == productId, includeProperties: "Category"),
+                Count = 1,
+                ProductId = productId
+            };
+            return View(cart);
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult Details(ShoppingCart shoppingCart)
         {
-            shoppingCart.ApplicationUserId = GetUserID();
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
 
-            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u =>
-                u.ApplicationUserId == GetUserID() && u.ProductId == shoppingCart.ProductId
-            );
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.ApplicationUserId == userId &&
+            u.ProductId == shoppingCart.ProductId);
 
             if (cartFromDb != null)
             {
+                //shopping cart exists
                 cartFromDb.Count += shoppingCart.Count;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
             }
             else
             {
+                //add cart record
                 _unitOfWork.ShoppingCart.Add(shoppingCart);
             }
             TempData["success"] = "Cart updated successfully";
+
+
+
+
             return RedirectToAction(nameof(Index));
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

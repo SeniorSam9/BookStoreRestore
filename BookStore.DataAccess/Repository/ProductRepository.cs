@@ -13,93 +13,35 @@ namespace BookStore.DataAccess.Repository
 {
     public class ProductRepository : Repository<Product>, IProductRepository
     {
-        private readonly ApplicationDbContext _dbContext;
-        private static readonly char[] separator = [','];
-
-        public ProductRepository(ApplicationDbContext dbContext)
-            : base(dbContext)
+        private ApplicationDbContext _db;
+        public ProductRepository(ApplicationDbContext db) : base(db)
         {
-            _dbContext = dbContext;
-            _dbContext.Products.Include(p => p.Category);
+            _db = db;
         }
 
-        public void Update(Product product)
+
+
+        public void Update(Product obj)
         {
-            Product? productFromDB = _dbContext.Products.FirstOrDefault(p => p.Id == product.Id);
-            if (productFromDB != null)
+            var objFromDb = _db.Products.FirstOrDefault(u => u.Id == obj.Id);
+            if (objFromDb != null)
             {
-                productFromDB.Title = product.Title;
-                productFromDB.ISBN = product.ISBN;
-                productFromDB.Price = product.Price;
-                productFromDB.Price50 = product.Price50;
-                productFromDB.ListPrice = product.ListPrice;
-                productFromDB.Price100 = product.Price100;
-                productFromDB.Description = product.Description;
-                productFromDB.CategoryId = product.CategoryId;
-                productFromDB.Author = product.Author;
-                //productFromDB.ProductImages = obj.ProductImages;
-                if (product.ImageUrl != null)
-                {
-                    productFromDB.ImageUrl = product.ImageUrl;
-                }
+                objFromDb.Title = obj.Title;
+                objFromDb.ISBN = obj.ISBN;
+                objFromDb.Price = obj.Price;
+                objFromDb.Price50 = obj.Price50;
+                objFromDb.ListPrice = obj.ListPrice;
+                objFromDb.Price100 = obj.Price100;
+                objFromDb.Description = obj.Description;
+                objFromDb.CategoryId = obj.CategoryId;
+                objFromDb.Author = obj.Author;
+                //objFromDb.ProductImages = obj.ProductImages;
+                //if (obj.ImageUrl != null)
+                //{
+                //    objFromDb.ImageUrl = obj.ImageUrl;
+                //}
             }
-            //_dbContext.Products.Update(product);
-            _dbContext.SaveChanges();
-        }
-
-        public override Product Get(
-            Expression<Func<Product, bool>> filter,
-            string? includeProperties = null,
-            bool tracked = false
-        )
-        {
-            IQueryable<Product> query;
-            if (tracked)
-            {
-                query = getDbSet();
-            }
-            else
-            {
-                query = getDbSet().AsNoTracking();
-            }
-
-            query = query.Where(filter);
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (
-                    var incProp in includeProperties.Split(
-                        separator,
-                        StringSplitOptions.RemoveEmptyEntries
-                    )
-                )
-                {
-                    query = query.Include(incProp);
-                }
-            }
-            return query.FirstOrDefault();
-        }
-
-        public override IEnumerable<Product> GetAll(
-            Expression<Func<Product, bool>>? filter = null,
-            string? includeProperties = null
-        )
-        {
-            IQueryable<Product> query = getDbSet();
-
-            if (!string.IsNullOrEmpty(includeProperties))
-            {
-                foreach (
-                    var incProp in includeProperties.Split(
-                        separator,
-                        StringSplitOptions.RemoveEmptyEntries
-                    )
-                )
-                {
-                    query = query.Include(incProp);
-                }
-            }
-
-            return query.ToList();
+            _db.SaveChanges();
         }
     }
 }

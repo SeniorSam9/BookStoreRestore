@@ -21,9 +21,6 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-12 col-lg-3 offset-lg-1 text-center mb-3">
-                        <img src="@Model.Product.ImageUrl" alt="book-img">
-                    </div>
                     <div class="col-12 col-lg-6 offset-lg-1">
 
                         <div class="col-12 col-md-6 pb-4">
@@ -78,7 +75,7 @@
                                           id="inputGroup-sizing-default">
                                         Count
                                     </span>
-                                    <input  type="number" value="1" class="form-control text-end" min="1"
+                                    <input asp-for="Count" type="number" value="1" class="form-control text-end"
                                            aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
 
                                 </div>
@@ -93,6 +90,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

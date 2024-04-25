@@ -8,59 +8,76 @@ namespace BookStore.DataAccess.Repository
     public class Repository<T> : IRepository<T>
         where T : class
     {
-        private readonly ApplicationDbContext _dbContext;
-
-        // dbSet acts in place of T "if T is category then dbSet is category "
-        private readonly DbSet<T> dbSet;
-
-        public Repository(ApplicationDbContext dbContext)
+        private readonly ApplicationDbContext _db;
+        internal DbSet<T> dbSet;
+        public Repository(ApplicationDbContext db)
         {
-            _dbContext = dbContext;
-            dbSet = _dbContext.Set<T>();
-        }
-
-        public DbSet<T> getDbSet()
-        {
-            return dbSet;
+            _db = db;
+            this.dbSet = _db.Set<T>();
+            //_db.Categories == dbSet
+            _db.Products.Include(u => u.Category).Include(u => u.CategoryId);
         }
 
         public void Add(T entity)
         {
-            _dbContext.Add(entity);
-            _dbContext.SaveChanges();
+            dbSet.Add(entity);
+            _db.SaveChanges();
+        }
+
+        public T Get(Expression<Func<T, bool>> filter, string? includeProperties = null, bool tracked = false)
+        {
+            IQueryable<T> query;
+            if (tracked)
+            {
+                query = dbSet;
+
+            }
+            else
+            {
+                query = dbSet.AsNoTracking();
+            }
+
+            query = query.Where(filter);
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return query.FirstOrDefault();
+
+        }
+
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>>? filter, string? includeProperties = null)
+        {
+            IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+            if (!string.IsNullOrEmpty(includeProperties))
+            {
+                foreach (var includeProp in includeProperties
+                    .Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProp);
+                }
+            }
+            return query.ToList();
         }
 
         public void Delete(T entity)
         {
-            _dbContext.Remove(entity);
-            _dbContext.SaveChanges();
+            dbSet.Remove(entity);
+            _db.SaveChanges();
         }
 
-        public void DeleteRange(IEnumerable<T> entities)
+        public void DeleteRange(IEnumerable<T> entity)
         {
-            _dbContext.RemoveRange(entities);
-            _dbContext.SaveChanges();
-        }
-
-        public virtual T Get(
-            Expression<Func<T, bool>> filter,
-            string? includeProperties = null,
-            bool tracked = false
-        )
-        {
-            // if dbset is category then query will be too
-            IQueryable<T> query = dbSet;
-            query = query.Where(filter);
-            return query.FirstOrDefault();
-        }
-
-        public virtual IEnumerable<T> GetAll(
-            Expression<Func<T, bool>>? filter = null,
-            string? includeProperties = null
-        )
-        {
-            IQueryable<T> query = dbSet;
-            return query.ToList();
+            dbSet.RemoveRange(entity);
+            _db.SaveChanges();
         }
     }
 }
