@@ -100,7 +100,7 @@ namespace BookStoreRestore.Areas.Admin.Controllers
         [Authorize(Roles = StaticDetails.Admin_Role + "," + StaticDetails.Employee_Role)]
         public IActionResult CancelOrder()
         {
-
+//
             var orderHeader = _unitOfWork.OrderHeader.Get(u => u.Id == OrderVM.OrderHeader.Id);
 
             if (orderHeader.PaymentStatus == StaticDetails.PaymentStatusApproved)
@@ -194,8 +194,7 @@ namespace BookStoreRestore.Areas.Admin.Controllers
 
 
             }
-
-
+            
             return View(orderHeaderId);
         }
 
