@@ -188,7 +188,6 @@ namespace BookStoreRestore.Areas.Customer.Controllers
                     _unitOfWork.OrderHeader.UpdateStatus(id, StaticDetails.StatusApproved, StaticDetails.PaymentStatusApproved);
                 }
                 HttpContext.Session.Clear();
-
             }
 
             _emailSender.SendEmailAsync(orderHeader.ApplicationUser.Email, "New Order - Bulky Book",
@@ -213,9 +212,13 @@ namespace BookStoreRestore.Areas.Customer.Controllers
 
         public IActionResult Minus(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked: true);
             if (cartFromDb.Count <= 1)
             {
+                HttpContext.Session.SetInt32(StaticDetails.SessionCart, 
+                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count() - 1);
                 //remove that from cart
                 _unitOfWork.ShoppingCart.Delete(cartFromDb);
             }
@@ -224,14 +227,16 @@ namespace BookStoreRestore.Areas.Customer.Controllers
                 cartFromDb.Count -= 1;
                 _unitOfWork.ShoppingCart.Update(cartFromDb);
             }
-
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Remove(int cartId)
         {
-            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId);
-
+            ClaimsIdentity claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var cartFromDb = _unitOfWork.ShoppingCart.Get(u => u.Id == cartId, tracked: true);
+            HttpContext.Session.SetInt32(StaticDetails.SessionCart, 
+                _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == userId).Count() - 1);
             _unitOfWork.ShoppingCart.Delete(cartFromDb);
 
             return RedirectToAction(nameof(Index));

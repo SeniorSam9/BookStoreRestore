@@ -41,6 +41,14 @@ namespace BookStoreRestore.Areas.Customer.Controllers
             // if return View("Privacy");
             // it will render privacy page
             // views are replaced with @RenderBody in _layout file
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var claims = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            // user is logged in
+            if (claims != null)
+            {
+                HttpContext.Session.SetInt32(StaticDetails.SessionCart, 
+                    _unitOfWork.ShoppingCart.GetAll(u => u.ApplicationUserId == claims.Value).Count());
+            }
             IEnumerable<Product> products = _unitOfWork.Product.GetAll(
                 includeProperties: "Category"
             );
